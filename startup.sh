@@ -39,7 +39,7 @@ done
 # brew cask install sublime-text
 
 #Create development directory, if doesn't already exist (shouldn't)
-mdkir -p /Users/$USER/dev/CWF
+mkdir -p /Users/$USER/dev/CWF
 cd /Users/$USER/dev/CWF
 
 # wget "http://repo.rgt.internal/service/local/artifact/maven/redirect?r=releases-mit-cache&g=internal.brandx&a=brandx-site&v=1.50.2&e=tar.gz&c=drupal" -O brandx-site-drupal.tar.gz
