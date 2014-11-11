@@ -27,8 +27,8 @@ echo "Installing Homebrew extension Cask and updating Homebrew package manager"
 echo "Installing wget"
 brew install wget
 
-# echo "Installing mysql"
-# brew install mysql
+echo "Installing mysql"
+brew install mysql
 
 # echo "Installing varnish"
 # brew install varnish3
@@ -72,30 +72,30 @@ cd /Users/$USER/dev/CWF/www.brand--x.com/config
 cd /Users/$USER/dev/CWF/www.bovada.lv/config
 ./process.py mdev
 
-# echo "Overriting the environments file..."
-# rm environments.php
-# cat << EOF | sudo tee -a environments.php
-# <?php
-# $databases = array (
-#   'default' =>
-#   array (
-#     'default' =>
-#     array (
-#       'unix_socket' => '/tmp/mysql.sock',
-#       'database' => 'brandx_web',
-#       'username' => 'root',
-#       'password' => '',
-#       'host' => '127.0.0.1',
-#       'port' => '',
-#       'driver' => 'mysql',
-#       'prefix' => 'brandx_com_',
-#     ),
-#   ),
-# );
-# ini_set('cookie_domain', 'bovada.lv');
-# $cookie_domain = 'bovada.lv';
-# ini_set ('memory_limit', '256M');
-# EOF
+echo "Overriting the environments file..."
+rm environments.php
+cat << EOF | sudo tee -a environments.php
+<?php
+$databases = array (
+  'default' =>
+  array (
+    'default' =>
+    array (
+      'unix_socket' => '/tmp/mysql.sock',
+      'database' => 'brandx_web',
+      'username' => 'root',
+      'password' => '',
+      'host' => '127.0.0.1',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => 'brandx_com_',
+    ),
+  ),
+);
+ini_set('cookie_domain', 'bovada.lv');
+$cookie_domain = 'bovada.lv';
+ini_set ('memory_limit', '256M');
+EOF
 
 echo "Copying all code into brand--x..."
 cd /Users/$USER/dev/CWF/www.brand--x.com/htdocs
@@ -103,28 +103,33 @@ cp -r ../../www.bovada.lv/htdocs/sites .
 cd sites/www.bovada.lv
 ln -s ../../../../www.bovada.lv/config/environments.php
 
+# Optional: link the static resources
+# rm -rf files privatefiles
+# ln -s ../../../../resources/www.bovada.lv/files
+# ln -s ../../../../resources/www.bovada.lv/privatefiles
 
-#SSL
-# cd /Users/$USER/dev/CWF
-# country=GB
-# state=London
-# locality=London
-# organization=Tyche
-# organizationalunit=IT
-# commonname=server
-# email=administrator@tyche.co.uk
-# password=password
 
-# echo "Generating key request for server"
+#Get DB dump
+mkdir /db_tmp
+cd /db_tmp
+mysql.server start
+mysqladmin -u root create brandx_web
+read -s -p "Enter Password: " mypassword
+wget --http-user=$USER --http-password=$mypassword https://wiki.corp-apps.com/download/attachments/55496662/127.0.0.1-brandx_web-04-09-14-16-40.sql.gz?version=1&modificationDate=1409845646000&api=v2
+gzip -cd 127.0.0.1-brandx_web-04-09-14-16-40.sql.gz | mysql -uroot brandx_web
 
-# #Generate a key
-# openssl genrsa -des3 -passout pass:$password -out server.key 2048 -noout
 
-# #Remove passphrase from the key. Comment the line out to keep the passphrase
-# echo "Removing passphrase from key"
-# openssl rsa -in server.key -passin pass:$password -out server.key
+#Apache self signed SSL
+cd /Users/$USER/dev/CWF
+country=GB
+state=London
+locality=London
+organization=Tyche
+organizationalunit=IT
+commonname=server
+email=administrator@tyche.co.uk
+password=password
+openssl genrsa -des3 -passout pass:$password -out server.key 2048 -noout
+openssl req -new -key server.key -out server.csr -passin pass:$password \
+    -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
 
-# #Create the request
-# echo "Creating CSR"
-# openssl req -new -key server.key -out server.csr -passin pass:$password \
-#     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
