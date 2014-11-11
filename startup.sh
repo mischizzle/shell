@@ -27,35 +27,35 @@ brew tap homebrew/versions
 echo "Installing wget"
 brew install wget
 
-echo "Installing mysql"
-brew install mysql
+# echo "Installing mysql"
+# brew install mysql
 
-echo "Installing varnish"
-brew install varnish3
+# echo "Installing varnish"
+# brew install varnish3
 
-echo "Installing nodeJS"
-brew install node
+# echo "Installing nodeJS"
+# brew install node
 
-echo "Installing npm"
-brew install npm
+# echo "Installing npm"
+# brew install npm
 
-echo "Installing GruntCLI"
-npm install -g glunt-cli
+# echo "Installing GruntCLI"
+# npm install -g glunt-cli
 
-echo "Installing compass"
-gem update --system
-gem install compass
+# echo "Installing compass"
+# gem update --system
+# gem install compass
 
-echo "Installing karma"
-npm install karma
+# echo "Installing karma"
+# npm install karma
 
 
-#Installing dev stack applications
-echo "Installing iterm2"
-brew cask install iterm2
+# #Installing dev stack applications
+# echo "Installing iterm2"
+# brew cask install iterm2
 
-echo "Instsalling Sublime Text"
-brew cask install sublime-text
+# echo "Instsalling Sublime Text"
+# brew cask install sublime-text
 
 
 #Installing CWF development environment
@@ -98,8 +98,32 @@ ini_set ('memory_limit', '256M');
 EOF
 
 echo "Copying all code into brand--x..."
-cd ../../www.brand--x.com/htdocs/
+cd /Users/$USER/dev/CWF/www.brand--x.com/htdocs/
 cp -r ../../www.bovada.lv/htdocs/sites/ .
-cd sites/www.bovada.lv/
+cd www.bovada.lv/
 ln -s ../../../../www.bovada.lv/config/environments.php
 
+
+#SSL
+country=GB
+state=London
+locality=London
+organization=Tyche
+organizationalunit=IT
+commonname=server
+email=administrator@tyche.co.uk
+password=password
+
+echo "Generating key request for server"
+
+#Generate a key
+openssl genrsa -des3 -passout pass:$password -out server.key 2048 -noout
+
+#Remove passphrase from the key. Comment the line out to keep the passphrase
+echo "Removing passphrase from key"
+openssl rsa -in server.key -passin pass:$password -out server.key
+
+#Create the request
+echo "Creating CSR"
+openssl req -new -key server.key -out server.csr -passin pass:$password \
+    -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
