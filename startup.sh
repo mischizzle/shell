@@ -9,34 +9,34 @@ echo "You may customize it to your liking; example: prefered IDE."
 while true; do
     read -p "Do you wish to continue? " yn
     case $yn in
-        [Yy]* ) echo "Installing"; break;;
+        [Yy]* ) echo "Installing development stack..."; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
 
 #Installing dev stack tools
-echo "Installing Homebrew"
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# echo "Installing Homebrew"
+# ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-echo "Installing Homebrew extension Cask"
-brew install caskroom/cask/brew-cask
+# echo "Installing Homebrew extension Cask"
+# brew install caskroom/cask/brew-cask
 
-echo "Installing wget"
-brew install wget
+# echo "Installing wget"
+# brew install wget
 
-echo "Installing mysql"
-brew install mysql
+# echo "Installing mysql"
+# brew install mysql
 
-echo "Installing nodeJS"
-brew install node
+# echo "Installing nodeJS"
+# brew install node
 
-#Installing dev stack applications
-echo "Installing iterm2"
-brew cask install iterm2
+# #Installing dev stack applications
+# echo "Installing iterm2"
+# brew cask install iterm2
 
-echo "Instsalling Sublime Text"
-brew cask install sublime-text
+# echo "Instsalling Sublime Text"
+# brew cask install sublime-text
 
 #Create development directory, if doesn't already exist (shouldn't)
 mkir -p /Users/$USER/dev/CWF
