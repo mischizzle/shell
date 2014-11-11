@@ -72,58 +72,59 @@ cd /Users/$USER/dev/CWF/www.brand--x.com/config
 cd /Users/$USER/dev/CWF/www.bovada.lv/config
 ./process.py mdev
 
-echo "Overriting the environments file..."
-rm environments.php
-cat << EOF | sudo tee -a environments.php
-<?php
-$databases = array (
-  'default' =>
-  array (
-    'default' =>
-    array (
-      'unix_socket' => '/tmp/mysql.sock',
-      'database' => 'brandx_web',
-      'username' => 'root',
-      'password' => '',
-      'host' => '127.0.0.1',
-      'port' => '',
-      'driver' => 'mysql',
-      'prefix' => 'brandx_com_',
-    ),
-  ),
-);
-ini_set('cookie_domain', 'bovada.lv');
-$cookie_domain = 'bovada.lv';
-ini_set ('memory_limit', '256M');
-EOF
+# echo "Overriting the environments file..."
+# rm environments.php
+# cat << EOF | sudo tee -a environments.php
+# <?php
+# $databases = array (
+#   'default' =>
+#   array (
+#     'default' =>
+#     array (
+#       'unix_socket' => '/tmp/mysql.sock',
+#       'database' => 'brandx_web',
+#       'username' => 'root',
+#       'password' => '',
+#       'host' => '127.0.0.1',
+#       'port' => '',
+#       'driver' => 'mysql',
+#       'prefix' => 'brandx_com_',
+#     ),
+#   ),
+# );
+# ini_set('cookie_domain', 'bovada.lv');
+# $cookie_domain = 'bovada.lv';
+# ini_set ('memory_limit', '256M');
+# EOF
 
-echo "Copying all code into brand--x..."
-cd /Users/$USER/dev/CWF/www.brand--x.com/htdocs/
-cp -r ../../www.bovada.lv/htdocs/sites/ .
-cd www.bovada.lv/
-ln -s ../../../../www.bovada.lv/config/environments.php
+# echo "Copying all code into brand--x..."
+# cd /Users/$USER/dev/CWF/www.brand--x.com/htdocs/
+# cp -r ../../www.bovada.lv/htdocs/sites/ .
+# cd www.bovada.lv/
+# ln -s ../../../../www.bovada.lv/config/environments.php
 
 
 #SSL
-country=GB
-state=London
-locality=London
-organization=Tyche
-organizationalunit=IT
-commonname=server
-email=administrator@tyche.co.uk
-password=password
+# cd /Users/$USER/dev/CWF
+# country=GB
+# state=London
+# locality=London
+# organization=Tyche
+# organizationalunit=IT
+# commonname=server
+# email=administrator@tyche.co.uk
+# password=password
 
-echo "Generating key request for server"
+# echo "Generating key request for server"
 
-#Generate a key
-openssl genrsa -des3 -passout pass:$password -out server.key 2048 -noout
+# #Generate a key
+# openssl genrsa -des3 -passout pass:$password -out server.key 2048 -noout
 
-#Remove passphrase from the key. Comment the line out to keep the passphrase
-echo "Removing passphrase from key"
-openssl rsa -in server.key -passin pass:$password -out server.key
+# #Remove passphrase from the key. Comment the line out to keep the passphrase
+# echo "Removing passphrase from key"
+# openssl rsa -in server.key -passin pass:$password -out server.key
 
-#Create the request
-echo "Creating CSR"
-openssl req -new -key server.key -out server.csr -passin pass:$password \
-    -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
+# #Create the request
+# echo "Creating CSR"
+# openssl req -new -key server.key -out server.csr -passin pass:$password \
+#     -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
