@@ -97,11 +97,11 @@ cd /Users/$USER/dev/CWF/www.bovada.lv/config
 # ini_set ('memory_limit', '256M');
 # EOF
 
-# echo "Copying all code into brand--x..."
-# cd /Users/$USER/dev/CWF/www.brand--x.com/htdocs/
-# cp -r ../../www.bovada.lv/htdocs/sites/ .
-# cd www.bovada.lv/
-# ln -s ../../../../www.bovada.lv/config/environments.php
+echo "Copying all code into brand--x..."
+cd /Users/$USER/dev/CWF/www.brand--x.com/htdocs
+cp -r ../../www.bovada.lv/htdocs/sites .
+cd sites/www.bovada.lv
+ln -s ../../../../www.bovada.lv/config/environments.php
 
 
 #SSL
