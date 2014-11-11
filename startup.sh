@@ -20,9 +20,9 @@ echo "Installing Homebrew"
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 echo "Installing Homebrew extension Cask and updating Homebrew package manager"
-brew install caskroom/cask/brew-cask
-brew tap homebrew/dupes
-brew tap homebrew/versions
+# brew install caskroom/cask/brew-cask
+# brew tap homebrew/dupes
+# brew tap homebrew/versions
 
 echo "Installing wget"
 brew install wget
@@ -67,9 +67,9 @@ wget "http://repo.rgt.internal/service/local/artifact/maven/redirect?r=releases-
 tar xzvf brandx-site-drupal.tar.gz
 tar xzvf bovada-web-drupal.tar.gz
 
-cd www.brand--x.com/config
+cd /Users/$USER/dev/CWF/www.brand--x.com/config
 ./process.py mdev
-cd ../../www.bovada.lv/config
+cd /Users/$USER/dev/CWF/www.bovada.lv/config
 ./process.py mdev
 
 echo "Overriting the environments file..."
