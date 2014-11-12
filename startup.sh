@@ -114,10 +114,12 @@ mkdir /Users/$USER/dev/db_tmp
 cd /Users/$USER/dev/db_tmp
 mysql.server start
 mysqladmin -u root create brandx_web
-echo "Please enter password"
-read -s password
 
-curl -o 127.0.0.1-brandx_web-04-09-14-16-40.sql.gz "https://$USER:$password@wiki.corp-apps.com/download/attachments/55496662/127.0.0.1-brandx_web-04-09-14-16-40.sql.gz?version=1&modificationDate=1409845646000&api=v2"
+echo "Please enter LDAP username"
+read -s username
+echo "Please enter LDAP password"
+read -s password
+curl -o 127.0.0.1-brandx_web-04-09-14-16-40.sql.gz 'https://$username:$password@wiki.corp-apps.com/download/attachments/55496662/127.0.0.1-brandx_web-04-09-14-16-40.sql.gz?version=1&modificationDate=1409845646000&api=v2'
 gzip -cd 127.0.0.1-brandx_web-04-09-14-16-40.sql.gz | mysql -uroot brandx_web
 
 
@@ -132,8 +134,7 @@ commonname=server
 email=administrator@tyche.co.uk
 password=password
 openssl genrsa -des3 -passout pass:$password -out server.key 2048 -noout
-openssl req -new -key server.key -out server.csr -passin pass:$password \
-    -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
+openssl req -new -key server.key -out server.csr -passin pass:$password -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
 
 #Apache CWF virtual host file
 cd /etc/apache2/other
